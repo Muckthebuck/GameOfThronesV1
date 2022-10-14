@@ -13,13 +13,8 @@ import java.util.stream.Collectors;
 import thrones.game.GoTCards.*;
 
 @SuppressWarnings("serial")
-public class Table extends CardGame {
-
-
-    static public int seed;
-    static Random random;
-
-    private final String version = "1.0";
+public class Table {
+    private final CardGame Game;
     public final int nbPlayers = 4;
     public final int nbStartCards = 9;
     public final int nbPlays = 6;
@@ -27,7 +22,7 @@ public class Table extends CardGame {
     private final int handWidth = 400;
     private final int pileWidth = 40;
     private Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
-
+    private final String[] playerTeams = { "[Players 0 & 2]", "[Players 1 & 3]"};
 
     private final Location[] handLocations = {
             new Location(350, 625),
@@ -47,13 +42,12 @@ public class Table extends CardGame {
     private final int watchingTime = 5000;
     private Hand[] hands;
     private Pile tablePile;
-    private final String[] playerTeams = { "[Players 0 & 2]", "[Players 1 & 3]"};
-    private int nextStartingPlayer = random.nextInt(nbPlayers);
+
+    private int nextStartingPlayer = GameOfThrones.random.nextInt(nbPlayers);
 
     private int[] scores = new int[nbPlayers];
 
-    Font bigFont = new Font("Arial", Font.BOLD, 36);
-    Font smallFont = new Font("Arial", Font.PLAIN, 10);
+
 
     // boolean[] humanPlayers = { true, false, false, false};
     boolean[] humanPlayers = { true, false, false, false};
@@ -70,21 +64,23 @@ public class Table extends CardGame {
         for (int i = 0; i < nbPlayers; i++) {
             scores[i] = 0;
             String text = "P" + i + "-0";
-            scoreActors[i] = new TextActor(text, Color.WHITE, bgColor, bigFont);
-            addActor(scoreActors[i], scoreLocations[i]);
+            scoreActors[i] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.bigFont);
+            Game.addActor(scoreActors[i], scoreLocations[i]);
         }
 
         String text = "Attack: 0 - Defence: 0";
         tablePile.initPileTextActors(text);
     }
 
+    // PILE, caluclate score stuff
     private void updateScore(int player) {
-        removeActor(scoreActors[player]);
+        Game.removeActor(scoreActors[player]);
         String text = "P" + player + "-" + scores[player];
-        scoreActors[player] = new TextActor(text, Color.WHITE, bgColor, bigFont);
-        addActor(scoreActors[player], scoreLocations[player]);
+        scoreActors[player] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.bigFont);
+        Game.addActor(scoreActors[player], scoreLocations[player]);
     }
 
+    // PILE, calculate score stuff
     private void updateScores() {
         for (int i = 0; i < nbPlayers; i++) {
             updateScore(i);
@@ -92,7 +88,7 @@ public class Table extends CardGame {
         System.out.println(playerTeams[0] + " score = " + scores[0] + "; " + playerTeams[1] + " score = " + scores[1]);
     }
 
-
+    // TABLE but make more helper functions/ class to handle display stuff
     private void setupGame() {
         hands = new Hand[nbPlayers];
 
@@ -124,12 +120,13 @@ public class Table extends CardGame {
         for (int i = 0; i < nbPlayers; i++) {
             layouts[i] = new RowLayout(handLocations[i], handWidth);
             layouts[i].setRotationAngle(90 * i);
-            hands[i].setView(this, layouts[i]);
+            hands[i].setView(Game, layouts[i]);
             hands[i].draw();
         }
         // End graphics
     }
 
+    // RULES
     private void pickACorrectSuit(int playerIndex, boolean isCharacter) {
         Hand currentHand = hands[playerIndex];
         List<Card> shortListCards = new ArrayList<>();
@@ -140,13 +137,14 @@ public class Table extends CardGame {
                 shortListCards.add(card);
             }
         }
-        if (shortListCards.isEmpty() || !isCharacter && random.nextInt(3) == 0) {
+        if (shortListCards.isEmpty() || !isCharacter && GameOfThrones.random.nextInt(3) == 0) {
             selected = Optional.empty();
         } else {
-            selected = Optional.of(shortListCards.get(random.nextInt(shortListCards.size())));
+            selected = Optional.of(shortListCards.get(GameOfThrones.random.nextInt(shortListCards.size())));
         }
     }
 
+    // RULES
     private void waitForCorrectSuit(int playerIndex, boolean isCharacter) {
         if (hands[playerIndex].isEmpty()) {
             selected = Optional.empty();
@@ -155,7 +153,7 @@ public class Table extends CardGame {
             hands[playerIndex].setTouchEnabled(true);
             do {
                 if (selected == null) {
-                    delay(100);
+                    GameOfThrones.delay(100);
                     continue;
                 }
                 Suit suit = selected.isPresent() ? (Suit) selected.get().getSuit() : null;
@@ -167,17 +165,17 @@ public class Table extends CardGame {
                     selected = null;
                     hands[playerIndex].setTouchEnabled(true);
                 }
-                delay(100);
+                GameOfThrones.delay(100);
             } while (true);
         }
     }
 
-
-
+    // PLAYER?
     private int getPlayerIndex(int index) {
         return index % nbPlayers;
     }
 
+    // TABLE
     private void executeAPlay() {
         tablePile.resetPile(deck);
 
@@ -189,7 +187,7 @@ public class Table extends CardGame {
         // 1: play the first 2 hearts
         for (int i = 0; i < 2; i++) {
             int playerIndex = getPlayerIndex(nextStartingPlayer + i);
-            setStatusText("Player " + playerIndex + " select a Heart card to play");
+            Game.setStatusText("Player " + playerIndex + " select a Heart card to play");
             if (humanPlayers[playerIndex]) {
                 waitForCorrectSuit(playerIndex, true);
             } else {
@@ -210,7 +208,7 @@ public class Table extends CardGame {
 
         while(remainingTurns > 0) {
             nextPlayer = getPlayerIndex(nextPlayer);
-            setStatusText("Player" + nextPlayer + " select a non-Heart card to play.");
+            Game.setStatusText("Player" + nextPlayer + " select a non-Heart card to play.");
             if (humanPlayers[nextPlayer]) {
                 waitForCorrectSuit(nextPlayer, false);
             } else {
@@ -218,18 +216,21 @@ public class Table extends CardGame {
             }
 
             if (selected.isPresent()) {
-                setStatusText("Selected: " + GoTCards.canonical(selected.get()) + ". Player" + nextPlayer + " select a pile to play the card.");
+                Game.setStatusText("Selected: " + GoTCards.canonical(selected.get()) + ". Player" + nextPlayer + " select a pile to play the card.");
+
+                //// we set moves here
                 if (humanPlayers[nextPlayer]) {
                     tablePile.waitForPileSelection();
                 } else {
                     tablePile.selectRandomPile();
                 }
+                ////
                 System.out.println("Player " + nextPlayer + " plays " + GoTCards.canonical(selected.get()) + " on pile " + tablePile.getSelectedPileIndex());
                 selected.get().setVerso(false);
                 selected.get().transfer(tablePile.getSelectedPile(), true); // transfer to pile (includes graphic effect)
                 tablePile.updatePileRanks();
             } else {
-                setStatusText("Pass.");
+                Game.setStatusText("Pass.");
             }
             nextPlayer++;
             remainingTurns--;
@@ -248,6 +249,8 @@ public class Table extends CardGame {
         String character0Result;
         String character1Result;
 
+
+        // this is where we set scores
         if (pile0Ranks[ATTACK_RANK_INDEX] > pile1Ranks[DEFENCE_RANK_INDEX]) {
             scores[0] += pile1CharacterRank.getRankValue();
             scores[2] += pile1CharacterRank.getRankValue();
@@ -268,21 +271,21 @@ public class Table extends CardGame {
             character1Result = "Character 1 attack character 0 failed.";
         }
         updateScores();
+        ///
+
+
         System.out.println(character0Result);
         System.out.println(character1Result);
-        setStatusText(character0Result + " " + character1Result);
+        Game.setStatusText(character0Result + " " + character1Result);
 
         // 5: discarded all cards on the piles
         nextStartingPlayer += 1;
-        delay(watchingTime);
+        GameOfThrones.delay(watchingTime);
     }
 
-    public Table() {
-        super(700, 700, 30);
-
-        setTitle("Game of Thrones (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");
-        setStatusText("Initializing...");
-        tablePile = new Pile(playerTeams, random, this);
+    public Table(CardGame game) {
+        this.Game = game;
+        tablePile = new Pile(playerTeams, GameOfThrones.random, game);
         initScore();
         setupGame();
         for (int i = 0; i < nbPlays; i++) {
@@ -299,33 +302,9 @@ public class Table extends CardGame {
             text = "Players 1 and 3 won.";
         }
         System.out.println("Result: " + text);
-        setStatusText(text);
-
-        refresh();
+        game.setStatusText(text);
+        game.refresh();
     }
 
-    public static void main(String[] args) {
-        // System.out.println("Working Directory = " + System.getProperty("user.dir"));
-        // final Properties properties = new Properties();
-        // properties.setProperty("watchingTime", "5000");
-        /*
-        if (args == null || args.length == 0) {
-            //  properties = PropertiesLoader.loadPropertiesFile("cribbage.properties");
-        } else {
-            //  properties = PropertiesLoader.loadPropertiesFile(args[0]);
-        }
-
-        String seedProp = properties.getProperty("seed");  //Seed property
-        if (seedProp != null) { // Use property seed
-			  seed = Integer.parseInt(seedProp);
-        } else { // and no property
-			  seed = new Random().nextInt(); // so randomise
-        }
-        */
-        Table.seed = 130006;
-        System.out.println("Seed = " + seed);
-        Table.random = new Random(seed);
-        new Table();
-    }
 
 }

@@ -8,7 +8,7 @@ import java.awt.*;
 import java.util.Random;
 
 public class Pile{
-    private CardGame table;
+    private final CardGame game;
     private Hand[] piles;
     private final int pileWidth = 40;
     private final int NON_SELECTION_VALUE = -1;
@@ -17,9 +17,9 @@ public class Pile{
     private final int ATTACK_RANK_INDEX = 0;
     private final int DEFENCE_RANK_INDEX = 1;
     private Actor[] pileTextActors = { null, null };
-    private static Random random;
+    private final Random random;
     private final String[] playerTeams;
-    Font smallFont = new Font("Arial", Font.PLAIN, 10);
+
 
     private final Location[] pileLocations = {
             new Location(350, 280),
@@ -31,10 +31,10 @@ public class Pile{
     };
 
 
-    public Pile(String[] playerTeams, Random random, CardGame table) {
-        this.table = table;
+    public Pile(String[] playerTeams, Random random, CardGame game) {
+        this.game = game;
         this.playerTeams = playerTeams;
-        Pile.random = random;
+        this.random = random;
     }
 
     public void resetPile(Deck deck) {
@@ -46,7 +46,7 @@ public class Pile{
         piles = new Hand[2];
         for (int i = 0; i < 2; i++) {
             piles[i] = new Hand(deck);
-            piles[i].setView(table, new RowLayout(pileLocations[i], 8 * pileWidth));
+            piles[i].setView(game, new RowLayout(pileLocations[i], 8 * pileWidth));
             piles[i].draw();
             final Hand currentPile = piles[i];
             final int pileIndex = i;
@@ -70,7 +70,7 @@ public class Pile{
             pile.setTouchEnabled(true);
         }
         while(selectedPileIndex == NON_SELECTION_VALUE) {
-            Table.delay(100);
+            GameOfThrones.delay(100);
         }
         for (Hand pile : piles) {
             pile.setTouchEnabled(false);
@@ -85,10 +85,10 @@ public class Pile{
 
     void updatePileRankState(int pileIndex, int attackRank, int defenceRank) {
         TextActor currentPile = (TextActor) pileTextActors[pileIndex];
-        table.removeActor(currentPile);
+        game.removeActor(currentPile);
         String text = playerTeams[pileIndex] + " Attack: " + attackRank + " - Defence: " + defenceRank;
-        pileTextActors[pileIndex] = new TextActor(text, Color.WHITE, table.bgColor, smallFont);
-        table.addActor(pileTextActors[pileIndex], pileStatusLocations[pileIndex]);
+        pileTextActors[pileIndex] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.smallFont);
+        game.addActor(pileTextActors[pileIndex], pileStatusLocations[pileIndex]);
     }
 
     void updatePileRanks() {
@@ -100,8 +100,8 @@ public class Pile{
 
     void initPileTextActors(String text){
         for (int i = 0; i < pileTextActors.length; i++) {
-            pileTextActors[i] = new TextActor(text, Color.WHITE, table.bgColor, smallFont);
-            table.addActor(pileTextActors[i], pileStatusLocations[i]);
+            pileTextActors[i] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.smallFont);
+            game.addActor(pileTextActors[i], pileStatusLocations[i]);
         }
     }
 
