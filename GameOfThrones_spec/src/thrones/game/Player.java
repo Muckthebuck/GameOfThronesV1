@@ -1,4 +1,4 @@
 package thrones.game;
 
-public class Player {
+public interface Player {
 }

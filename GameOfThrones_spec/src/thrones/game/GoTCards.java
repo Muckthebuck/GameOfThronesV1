@@ -3,6 +3,7 @@ package thrones.game;
 import ch.aplu.jcardgame.Card;
 import ch.aplu.jcardgame.Hand;
 
+import java.util.Random;
 import java.util.stream.Collectors;
 
 public class GoTCards
@@ -57,5 +58,11 @@ public class GoTCards
 
     public static String canonical(Hand h) {
         return "[" + h.getCardList().stream().map(GoTCards::canonical).collect(Collectors.joining(",")) + "]";
+    }
+
+    public static Card randomCard(Hand hand, Random random) {
+        assert !hand.isEmpty() : " random card from empty hand.";
+        int x = random.nextInt(hand.getNumberOfCards());
+        return hand.get(x);
     }
 }

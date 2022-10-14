@@ -12,7 +12,7 @@ public class Dealer {
         Hand pack = deck.toHand(false);
         assert pack.getNumberOfCards() == 52 : " Starting pack is not 52 cards.";
         // Remove 4 Aces
-        List<Card> aceCards = pack.getCardsWithRank(GameOfThrones.Rank.ACE);
+        List<Card> aceCards = pack.getCardsWithRank(GoTCards.Rank.ACE);
         for (Card card : aceCards) {
             card.removeFromHand(false);
         }
@@ -20,7 +20,7 @@ public class Dealer {
         // Give each player 3 heart cards
         for (int i = 0; i < nbPlayers; i++) {
             for (int j = 0; j < 3; j++) {
-                List<Card> heartCards = pack.getCardsWithSuit(GameOfThrones.Suit.HEARTS);
+                List<Card> heartCards = pack.getCardsWithSuit(GoTCards.Suit.HEARTS);
                 int x = Table.random.nextInt(heartCards.size());
                 Card randomCard = heartCards.get(x);
                 randomCard.removeFromHand(false);
@@ -41,7 +41,7 @@ public class Dealer {
             assert hands[j].getNumberOfCards() == 12 : " Hand does not have twelve cards.";
         }
     }
-    public static Card randomCard(Hand hand) {
+    private static Card randomCard(Hand hand) {
         assert !hand.isEmpty() : " random card from empty hand.";
         int x = Table.random.nextInt(hand.getNumberOfCards());
         return hand.get(x);
