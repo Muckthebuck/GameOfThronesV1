@@ -1,4 +1,6 @@
 package thrones.game;
 
-public class Rule {
+public interface Rule {
+
+    public void checkValidMove(Suit suit, Hand pile) throws BrokeRuleException;
 }

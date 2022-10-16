@@ -23,6 +23,7 @@ public class Table {
     private final int pileWidth = 40;
     private Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     private final String[] playerTeams = { "[Players 0 & 2]", "[Players 1 & 3]"};
+    private final CompositeRule rule = new CompositeRule();
 
     private final Location[] handLocations = {
             new Location(350, 625),
@@ -224,6 +225,8 @@ public class Table {
                 } else {
                     tablePile.selectRandomPile();
                 }
+
+                rule.checkValidMove(selected.getSuit(), tablePile.getSelectedPile());
                 ////
                 System.out.println("Player " + nextPlayer + " plays " + GoTCards.canonical(selected.get()) + " on pile " + tablePile.getSelectedPileIndex());
                 selected.get().setVerso(false);

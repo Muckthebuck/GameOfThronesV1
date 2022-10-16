@@ -5,11 +5,8 @@ package thrones.game;
 import ch.aplu.jcardgame.*;
 import ch.aplu.jgamegrid.*;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.io.FileReader;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.awt.*;
+import java.util.Random;
 
 @SuppressWarnings("serial")
 public class GameOfThrones extends  CardGame{
