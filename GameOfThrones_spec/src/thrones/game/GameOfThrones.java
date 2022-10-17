@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.Random;
 
 @SuppressWarnings("serial")
-public class GameOfThrones extends  CardGame{
+public class GameOfThrones extends CardGame{
 
     private final String version = "1.0";
     public static Font smallFont = new Font("Arial", Font.PLAIN, 10);
