@@ -226,7 +226,7 @@ public class Table {
                     tablePile.selectRandomPile();
                 }
 
-                rule.checkValidMove(selected.getSuit(), tablePile.getSelectedPile());
+                rule.checkValidMove((Suit) selected.get().getSuit(), tablePile.getSelectedPile());
                 ////
                 System.out.println("Player " + nextPlayer + " plays " + GoTCards.canonical(selected.get()) + " on pile " + tablePile.getSelectedPileIndex());
                 selected.get().setVerso(false);

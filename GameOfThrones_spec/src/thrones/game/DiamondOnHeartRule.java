@@ -1,4 +1,6 @@
 package thrones.game;
+import ch.aplu.jcardgame.Hand;
+import thrones.game.GoTCards.Suit;
 
 public class DiamondOnHeartRule implements Rule {
 
@@ -7,4 +9,5 @@ public class DiamondOnHeartRule implements Rule {
             throw new BrokeRuleException("You can not play a diamond on top of a heart");
         } else {}
     }
+
 }
