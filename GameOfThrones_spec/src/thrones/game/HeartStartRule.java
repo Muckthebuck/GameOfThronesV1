@@ -4,9 +4,11 @@ import thrones.game.GoTCards.Suit;
 
 public class HeartStartRule implements Rule {
 
-    public void checkValidMove(Suit suit, Hand pile) throws BrokeRuleException {
+    public boolean checkValidMove(Suit suit, Hand pile) {
         if ((suit == Suit.HEARTS) && (pile.getLast() != null)) {
-            throw new BrokeRuleException("You can only play a heart as the first card on a pile");
-        } else {}
+            return false;
+        } else {
+            return true;
+        }
     }
 }

@@ -3,14 +3,16 @@ package thrones.game;
 // Oh_Heaven.java
 
 import ch.aplu.jcardgame.*;
-import ch.aplu.jgamegrid.*;
+import ch.aplu.jgamegrid.Actor;
+import ch.aplu.jgamegrid.Location;
+import ch.aplu.jgamegrid.TextActor;
+import thrones.game.GoTCards.Rank;
+import thrones.game.GoTCards.Suit;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.io.FileReader;
-import java.util.*;
-import java.util.stream.Collectors;
-import thrones.game.GoTCards.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("serial")
 public class Table {
@@ -23,7 +25,7 @@ public class Table {
     private final int pileWidth = 40;
     private Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     private final String[] playerTeams = { "[Players 0 & 2]", "[Players 1 & 3]"};
-    private final CompositeRule rule = new CompositeRule();
+    private final RuleChecker rules = new RuleChecker();
 
     private final Location[] handLocations = {
             new Location(350, 625),
@@ -226,7 +228,12 @@ public class Table {
                     tablePile.selectRandomPile();
                 }
 
-                rule.checkValidMove((Suit) selected.get().getSuit(), tablePile.getSelectedPile());
+                try {
+                    rules.checkMove((Suit) selected.get().getSuit(), tablePile.getSelectedPile(), true);
+                } catch (BrokeRuleException e) {
+                    System.err.println("Caught BrokeRuleException: " + e.getMessage());
+                }
+
                 ////
                 System.out.println("Player " + nextPlayer + " plays " + GoTCards.canonical(selected.get()) + " on pile " + tablePile.getSelectedPileIndex());
                 selected.get().setVerso(false);
