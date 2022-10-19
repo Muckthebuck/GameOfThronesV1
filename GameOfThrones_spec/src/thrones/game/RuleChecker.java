@@ -21,7 +21,7 @@ public class RuleChecker {
                 } else {
                     return false;
                 }
-            };
+            }
         }
         return true;
     }
