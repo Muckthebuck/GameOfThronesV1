@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class RuleChecker {
 
-    private ArrayList<Rule> rules = new ArrayList<>();
+    private final ArrayList<Rule> rules = new ArrayList<>();
 
     public RuleChecker() {
         rules.add(new DiamondOnHeartRule());
@@ -15,7 +15,7 @@ public class RuleChecker {
 
 
     public boolean checkMove(GoTCards.Suit suit, Hand pile, boolean throwException) throws BrokeRuleException {
-        for (Rule rule: rules) {
+        for (Rule rule : rules) {
             if (!rule.checkValidMove(suit, pile)) {
                 if (throwException) {
                     throw new BrokeRuleException("Illegal move has been played.");

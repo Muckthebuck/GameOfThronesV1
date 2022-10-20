@@ -3,60 +3,59 @@ package thrones.game;
 // Oh_Heaven.java
 
 import ch.aplu.jcardgame.*;
-import ch.aplu.jgamegrid.Actor;
 import ch.aplu.jgamegrid.Location;
-import ch.aplu.jgamegrid.TextActor;
 import thrones.game.GoTCards.Rank;
 import thrones.game.GoTCards.Suit;
 import thrones.game.PlayerFactory.PlayerType;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
+
 import java.util.Optional;
 
 @SuppressWarnings("serial")
 public class Table {
-    private final CardGame Game;
     public final int nbPlayers = 4;
-
     public final int nbPlays = 6;
     public final int nbRounds = 3;
+
     private final int handWidth = 400;
-    private final int pileWidth = 40;
-    private Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
-    private final String[] playerTeams = { "[Players 0 & 2]", "[Players 1 & 3]"};
+    private final String[] playerTeams = {"[Players 0 & 2]", "[Players 1 & 3]"};
     private final RuleChecker rules = new RuleChecker();
-    private  final ScoreHandler scoreHandler;
-    private  final PlayerFactory playerFactory;
+    private final ScoreHandler scoreHandler;
+    private final PlayerFactory playerFactory;
     private final Location[] handLocations = {
             new Location(350, 625),
             new Location(75, 350),
             new Location(350, 75),
             new Location(625, 350)
     };
-
-
-
-
     private final int watchingTime = 5000;
-    //private Hand[] hands;
-    private Pile tablePile;
 
-    private int nextStartingPlayer = GameOfThrones.random.nextInt(nbPlayers);
-
-    // boolean[] humanPlayers = { true, false, false, false};
-    boolean[] humanPlayers = { true, false, false, false};
-    PlayerType[] playerTypes = {PlayerType.HUMAN, PlayerType.RANDOM, PlayerType.RANDOM, PlayerType.RANDOM};
-    Player[] players;
-    private Optional<Card> selected;
-    private final int NON_SELECTION_VALUE = -1;
-
-    private final int UNDEFINED_INDEX = -1;
     private final int ATTACK_RANK_INDEX = 0;
     private final int DEFENCE_RANK_INDEX = 1;
+    // boolean[] humanPlayers = { true, false, false, false};
+    //boolean[] humanPlayers = {true, false, false, false};
+    PlayerType[] playerTypes = {PlayerType.HUMAN, PlayerType.RANDOM, PlayerType.RANDOM, PlayerType.RANDOM};
+    Player[] players;
+    private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
+    //private Hand[] hands;
+    private final Pile tablePile;
+    private final CardGame Game;
+    private int nextStartingPlayer = GameOfThrones.random.nextInt(nbPlayers);
 
 
+    public Table(CardGame game) {
+        this.Game = game;
+        tablePile = new Pile(playerTeams, GameOfThrones.random, game);
+        scoreHandler = new ScoreHandler(nbPlays, nbPlayers, game, tablePile, playerTeams);
+        playerFactory = new PlayerFactory();
+        setupGame();
+        for (int i = 0; i < nbPlays; i++) {
+            executeAPlay();
+            scoreHandler.updateScores();
+        }
 
+        scoreHandler.displayResults();
+        game.refresh();
+    }
 
     // TABLE but make more helper functions/ class to handle display stuff
     private void setupGame() {
@@ -70,6 +69,7 @@ public class Table {
                     player.setSelected(Optional.of(card));
                     currentHand.setTouchEnabled(false);
                 }
+
                 public void rightClicked(Card card) {
                     player.setSelected(Optional.empty()); // Don't care which card we right-clicked for player to pass
                     currentHand.setTouchEnabled(false);
@@ -102,6 +102,7 @@ public class Table {
         assert players[nextStartingPlayer].getHand().getNumberOfCardsWithSuit(Suit.HEARTS) != 0 : " Starting player has no hearts.";
 
         // 1: play the first 2 hearts
+        Optional<Card> selected;
         for (int i = 0; i < 2; i++) {
             int playerIndex = getPlayerIndex(nextStartingPlayer + i);
 
@@ -118,7 +119,7 @@ public class Table {
         int remainingTurns = nbPlayers * nbRounds - 2;
         int nextPlayer = nextStartingPlayer + 2;
 
-        while(remainingTurns > 0) {
+        while (remainingTurns > 0) {
             nextPlayer = getPlayerIndex(nextPlayer);
 
             players[nextPlayer].makeMove(Game, tablePile, false);
@@ -145,22 +146,6 @@ public class Table {
         // 5: discarded all cards on the piles
         nextStartingPlayer += 1;
         GameOfThrones.delay(watchingTime);
-    }
-
-
-    public Table(CardGame game) {
-        this.Game = game;
-        tablePile = new Pile(playerTeams, GameOfThrones.random, game);
-        scoreHandler = new ScoreHandler(nbPlays, nbPlayers, game, tablePile, playerTeams);
-        playerFactory = new PlayerFactory();
-        setupGame();
-        for (int i = 0; i < nbPlays; i++) {
-            executeAPlay();
-            scoreHandler.updateScores();
-        }
-
-        scoreHandler.displayResults();
-        game.refresh();
     }
 
 

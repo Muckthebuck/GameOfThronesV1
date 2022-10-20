@@ -1,0 +1,227 @@
+@startuml
+class thrones.game.MoveHandler {
++ void getMove()
+}
+class thrones.game.Human {
++ void makeMove(CardGame,Pile,boolean)
++ void pickACorrectSuit(boolean)
++ void selectPile(Pile,boolean)
+}
+class thrones.game.Dealer {
++ {static} void deal(Player[],int,int,Deck)
+- {static} Card randomCard(Hand)
+}
+class thrones.game.GoTCards {
++ {static} String canonical(GoTCards.Suit)
++ {static} String canonical(GoTCards.Rank)
++ {static} String canonical(Card)
++ {static} String canonical(Hand)
++ {static} Card randomCard(Hand,Random)
+}
+enum thrones.game.GOTSuit {
++  CHARACTER
++  DEFENCE
++  ATTACK
++  MAGIC
+}
+enum thrones.game.Suit {
++  SPADES
++  HEARTS
++  DIAMONDS
++  CLUBS
+- GoTCards.GOTSuit gotsuit
++ boolean isDefence()
++ boolean isAttack()
++ boolean isCharacter()
++ boolean isMagic()
+}
+enum thrones.game.Rank {
++  ACE
++  KING
++  QUEEN
++  JACK
++  TEN
++  NINE
++  EIGHT
++  SEVEN
++  SIX
++  FIVE
++  FOUR
++  THREE
++  TWO
+- int rankValue
++ int getRankValue()
+}
+class thrones.game.RuleChecker {
+- ArrayList<Rule> rules
++ boolean checkMove(GoTCards.Suit,Hand,boolean)
+}
+class thrones.game.GameOfThrones {
++ {static} Font smallFont
++ {static} Font bigFont
++ {static} int seed
+~ {static} Random random
+- String version
+- Table table
++ {static} void main(String[])
+}
+enum thrones.game.playerType {
++  human
++  random
+}
+class thrones.game.Ai {
+- Random random
++ Random getRandom()
++ void pickACorrectSuit(boolean)
++ void selectPile(Pile,boolean)
+}
+class thrones.game.SimpleAi {
++ void makeMove(CardGame,Pile,boolean)
+- void removeHinderMoves(Pile)
+}
+interface thrones.game.Rule {
+~ boolean checkValidMove(Suit,Hand)
+}
+class thrones.game.Pile {
+- CardGame game
+- int pileWidth
+- int NON_SELECTION_VALUE
+- int UNDEFINED_INDEX
+- int ATTACK_RANK_INDEX
+- int DEFENCE_RANK_INDEX
+- Random random
+- String[] playerTeams
+- Location[] pileLocations
+- Location[] pileStatusLocations
+- Hand[] piles
+- int selectedPileIndex
+- Actor[] pileTextActors
+- ScoreCalculator scoreCalculator
++ void resetPile(Deck)
+~ int getTeamPileIdx(int)
+~ void selectTeamPile(int)
+~ void selectRandomPile()
+~ void waitForPileSelection()
+~ int[] calculatePileRanks(int)
+~ void updatePileRankState(int,int,int)
+~ void updatePileRanks()
+~ void initPileTextActors(String)
+~ void transferCardToPile(Card)
++ Hand[] getPiles()
++ Hand getSelectedPile()
++ Hand getSelectedPile(int)
++ Location[] getPileLocations()
++ Location[] getPileStatusLocations()
++ int getSelectedPileIndex()
+}
+class thrones.game.DiamondOnHeartRule {
++ boolean checkValidMove(Suit,Hand)
+}
+class thrones.game.Table {
++ int nbPlayers
++ int nbPlays
++ int nbRounds
+- int handWidth
+- String[] playerTeams
+- RuleChecker rules
+- ScoreHandler scoreHandler
+- PlayerFactory playerFactory
+- Location[] handLocations
+- int watchingTime
+- int ATTACK_RANK_INDEX
+- int DEFENCE_RANK_INDEX
+~ PlayerType[] playerTypes
+~ Player[] players
+- Deck deck
+- Pile tablePile
+- CardGame Game
+- int nextStartingPlayer
+- void setupGame()
+- int getPlayerIndex(int)
+- void executeAPlay()
+}
+class thrones.game.ScoreHandler {
++ int nbPlays
++ int nbPlayers
+- CardGame Game
+- String[] playerTeams
+- Location[] scoreLocations
+- Actor[] scoreActors
+- int[] scores
+- Pile tablePile
+- void initScore()
++ void updateScore(int)
++ void updateScores()
++ void setScores(int,int)
++ void displayResults()
+}
+class thrones.game.BrokeRuleException {
+}
+class thrones.game.HeartStartRule {
++ boolean checkValidMove(Suit,Hand)
+}
+class thrones.game.Player {
+- int NON_SELECTION_VALUE
+- RuleChecker rules
+- int playerIdx
+- Hand hand
+- Optional<Card> selected
+- int selectedPileIndex
++ RuleChecker getRules()
++ Hand getHand()
++ void setHand(Hand)
++ Optional<Card> getSelected()
++ void setSelected(Optional<Card>)
++ int getSelectedPileIndex()
++ void setSelectedPileIndex(int)
++ int getPlayerIdx()
++ void displaySelected(CardGame)
++ void displayTurnStart(CardGame,boolean)
++ boolean isLegalMove(Pile)
++ void makeMove(CardGame,Pile,boolean)
++ void pickACorrectSuit(boolean)
++ void selectPile(Pile,boolean)
+}
+class thrones.game.RandomAi {
++ void makeMove(CardGame,Pile,boolean)
+}
+class thrones.game.SmartAi {
++ void makeMove(CardGame,Pile,boolean)
++ void pickACorrectSuit(boolean)
++ void selectPile(Pile,boolean)
+}
+class thrones.game.PlayerFactory {
++ int nbStartCards
+~ PlayerType playerType
++ Player[] setUpPlayers(PlayerType[],RuleChecker,Deck)
++ Player getPlayer(PlayerType,RuleChecker,int)
+}
+enum thrones.game.PlayerType {
++  HUMAN
++  RANDOM
++  SIMPLE
++  SMART
+}
+class thrones.game.ScoreCalculator {
+- int DOUBLE
+- int ATTACK_RANK_INDEX
+- int DEFENCE_RANK_INDEX
++ int[] calculate(Hand)
+- int[] rankMultiplier(int[],int[])
+- int[] characterCardRank(Card)
+- int[] attackDefenceCardRank(Card,int)
+- int[] magicCardRank(Card,int[])
+- int[] addRanks(int[],int[])
+}
+
+
+thrones.game.Player <|-- thrones.game.Human
+ch.aplu.jcardgame.CardGame <|-- thrones.game.GameOfThrones
+thrones.game.Player <|-- thrones.game.Ai
+thrones.game.Ai <|-- thrones.game.SimpleAi
+thrones.game.Rule <|.. thrones.game.DiamondOnHeartRule
+thrones.game.Exception <|-- thrones.game.BrokeRuleException
+thrones.game.Rule <|.. thrones.game.HeartStartRule
+thrones.game.Ai <|-- thrones.game.RandomAi
+thrones.game.Ai <|-- thrones.game.SmartAi
+@enduml

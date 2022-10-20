@@ -2,27 +2,20 @@ package thrones.game;
 
 // Oh_Heaven.java
 
-import ch.aplu.jcardgame.*;
-import ch.aplu.jgamegrid.*;
+import ch.aplu.jcardgame.CardGame;
 
 import java.awt.*;
 import java.util.Random;
 
 @SuppressWarnings("serial")
-public class GameOfThrones extends CardGame{
+public class GameOfThrones extends CardGame {
 
-    private final String version = "1.0";
     public static Font smallFont = new Font("Arial", Font.PLAIN, 10);
     public static Font bigFont = new Font("Arial", Font.BOLD, 36);
-    private Table table;
     static public int seed;
     static Random random;
-
-    public enum playerType{
-        human,
-        random,
-
-    }
+    private final String version = "1.0";
+    private final Table table;
 
     public GameOfThrones() {
         super(700, 700, 30);

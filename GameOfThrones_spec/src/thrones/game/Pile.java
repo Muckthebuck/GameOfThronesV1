@@ -1,26 +1,22 @@
 package thrones.game;
 
 import ch.aplu.jcardgame.*;
-
-import ch.aplu.jgamegrid.*;
+import ch.aplu.jgamegrid.Actor;
+import ch.aplu.jgamegrid.Location;
+import ch.aplu.jgamegrid.TextActor;
 
 import java.awt.*;
 import java.util.Random;
 
-public class Pile{
+public class Pile {
     private final CardGame game;
-    private Hand[] piles;
     private final int pileWidth = 40;
     private final int NON_SELECTION_VALUE = -1;
-    private int selectedPileIndex = NON_SELECTION_VALUE;
     private final int UNDEFINED_INDEX = -1;
     private final int ATTACK_RANK_INDEX = 0;
     private final int DEFENCE_RANK_INDEX = 1;
-    private Actor[] pileTextActors = { null, null };
     private final Random random;
     private final String[] playerTeams;
-    private ScoreCalculator scoreCalculator = new ScoreCalculator(ATTACK_RANK_INDEX, DEFENCE_RANK_INDEX);
-
     private final Location[] pileLocations = {
             new Location(350, 280),
             new Location(350, 430)
@@ -29,6 +25,10 @@ public class Pile{
             new Location(250, 200),
             new Location(250, 520)
     };
+    private Hand[] piles;
+    private int selectedPileIndex = NON_SELECTION_VALUE;
+    private final Actor[] pileTextActors = {null, null};
+    private final ScoreCalculator scoreCalculator = new ScoreCalculator(ATTACK_RANK_INDEX, DEFENCE_RANK_INDEX);
 
 
     public Pile(String[] playerTeams, Random random, CardGame game) {
@@ -60,21 +60,25 @@ public class Pile{
 
         updatePileRanks();
     }
-    int getTeamPileIdx(int playerIdx){
-        return playerIdx%2;
+
+    int getTeamPileIdx(int playerIdx) {
+        return playerIdx % 2;
     }
-    void selectTeamPile(int playerIdx){
-        selectedPileIndex= playerIdx % 2;
+
+    void selectTeamPile(int playerIdx) {
+        selectedPileIndex = playerIdx % 2;
     }
+
     void selectRandomPile() {
         selectedPileIndex = random.nextInt(2);
     }
+
     void waitForPileSelection() {
         selectedPileIndex = NON_SELECTION_VALUE;
         for (Hand pile : piles) {
             pile.setTouchEnabled(true);
         }
-        while(selectedPileIndex == NON_SELECTION_VALUE) {
+        while (selectedPileIndex == NON_SELECTION_VALUE) {
             GameOfThrones.delay(100);
         }
         for (Hand pile : piles) {
@@ -102,14 +106,14 @@ public class Pile{
         }
     }
 
-    void initPileTextActors(String text){
+    void initPileTextActors(String text) {
         for (int i = 0; i < pileTextActors.length; i++) {
             pileTextActors[i] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.smallFont);
             game.addActor(pileTextActors[i], pileStatusLocations[i]);
         }
     }
 
-    void transferCardToPile(Card card){
+    void transferCardToPile(Card card) {
         card.setVerso(false);
         card.transfer(this.getSelectedPile(), true); // transfer to pile (includes graphic effect)
         this.updatePileRanks();
@@ -120,11 +124,11 @@ public class Pile{
         return piles;
     }
 
-    public Hand getSelectedPile(){
+    public Hand getSelectedPile() {
         return getPiles()[getSelectedPileIndex()];
     }
 
-    public Hand getSelectedPile(int pileIndex){
+    public Hand getSelectedPile(int pileIndex) {
         return getPiles()[pileIndex];
     }
 

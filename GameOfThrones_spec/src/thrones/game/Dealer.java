@@ -1,12 +1,10 @@
 package thrones.game;
 
 import ch.aplu.jcardgame.Card;
-import ch.aplu.jcardgame.CardAdapter;
-import ch.aplu.jcardgame.Hand;
 import ch.aplu.jcardgame.Deck;
+import ch.aplu.jcardgame.Hand;
 
 import java.util.List;
-import java.util.Optional;
 
 public class Dealer {
 
@@ -48,6 +46,7 @@ public class Dealer {
         }
 
     }
+
     private static Card randomCard(Hand hand) {
         assert !hand.isEmpty() : " random card from empty hand.";
         int x = GameOfThrones.random.nextInt(hand.getNumberOfCards());

@@ -4,8 +4,8 @@ import ch.aplu.jcardgame.CardGame;
 
 import java.util.Random;
 
-public class SmartAi extends Ai{
-    public SmartAi(RuleChecker rules,Random random, int idx) {
+public class SmartAi extends Ai {
+    public SmartAi(RuleChecker rules, Random random, int idx) {
         super(rules, random, idx);
     }
 

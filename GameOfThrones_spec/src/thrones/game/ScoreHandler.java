@@ -11,17 +11,16 @@ public class ScoreHandler {
     public final int nbPlays;
     public final int nbPlayers;
     private final CardGame Game;
-    private Actor[] scoreActors = {null, null, null, null};
-    private int[] scores;
-    private Pile tablePile;
     private final String[] playerTeams;
-
     private final Location[] scoreLocations = {
             new Location(575, 675),
             new Location(25, 575),
             new Location(25, 25),
             new Location(575, 125)
     };
+    private final Actor[] scoreActors = {null, null, null, null};
+    private final int[] scores;
+    private final Pile tablePile;
 
     public ScoreHandler(int nbPlays, int nbPlayers, CardGame game, Pile tablePile, String[] playerTeams) {
         this.nbPlays = nbPlays;
@@ -61,7 +60,7 @@ public class ScoreHandler {
         System.out.println(playerTeams[0] + " score = " + scores[0] + "; " + playerTeams[1] + " score = " + scores[1]);
     }
 
-    public void setScores(int ATTACK_RANK_INDEX, int DEFENCE_RANK_INDEX){
+    public void setScores(int ATTACK_RANK_INDEX, int DEFENCE_RANK_INDEX) {
         // 3: calculate winning & update scores for players
         tablePile.updatePileRanks();
         int[] pile0Ranks = tablePile.calculatePileRanks(0);
@@ -100,7 +99,7 @@ public class ScoreHandler {
         Game.setStatusText(character0Result + " " + character1Result);
     }
 
-    public void displayResults(){
+    public void displayResults() {
         String text;
         if (scores[0] > scores[1]) {
             text = "Players 0 and 2 won.";

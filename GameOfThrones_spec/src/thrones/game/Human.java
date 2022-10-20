@@ -10,24 +10,23 @@ public class Human extends Player {
         super(rules, idx);
     }
 
-    public void makeMove(CardGame game, Pile tablePile, boolean isCharacter){
-      do{
-          this.displayTurnStart(game, isCharacter);
-          pickACorrectSuit(isCharacter);
-          if(!this.getSelected().isPresent()){
-              this.setSelected(Optional.empty());
-              return;
-          }
-          this.displaySelected(game);
+    public void makeMove(CardGame game, Pile tablePile, boolean isCharacter) {
+        do {
+            this.displayTurnStart(game, isCharacter);
+            pickACorrectSuit(isCharacter);
+            if (!this.getSelected().isPresent()) {
+                this.setSelected(Optional.empty());
+                return;
+            }
+            this.displaySelected(game);
 
-          selectPile(tablePile, isCharacter);
+            selectPile(tablePile, isCharacter);
 
-      }while(!this.isLegalMove(tablePile));
+        } while (!this.isLegalMove(tablePile));
     }
 
 
-
-    public void  pickACorrectSuit(boolean isCharacter){
+    public void pickACorrectSuit(boolean isCharacter) {
         if (this.getHand().isEmpty()) {
             this.setSelected(Optional.empty());
         } else {
@@ -53,10 +52,10 @@ public class Human extends Player {
         }
     }
 
-    public void selectPile(Pile tablePile, boolean isCharacter){
-        if(isCharacter){
+    public void selectPile(Pile tablePile, boolean isCharacter) {
+        if (isCharacter) {
             tablePile.selectTeamPile(this.getPlayerIdx());
-        }else{
+        } else {
             tablePile.waitForPileSelection();
         }
 

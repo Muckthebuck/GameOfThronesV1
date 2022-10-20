@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-public abstract class Ai extends Player {
+public class Ai extends Player {
     private final Random random;
-    public Ai(RuleChecker rules,Random random, int idx) {
+
+    public Ai(RuleChecker rules, Random random, int idx) {
         super(rules, idx);
         this.random = random;
     }
@@ -19,7 +20,7 @@ public abstract class Ai extends Player {
         return random;
     }
 
-    public void  pickACorrectSuit(boolean isCharacter) {
+    public void pickACorrectSuit(boolean isCharacter) {
         Hand currentHand = this.getHand();
 
         List<Card> shortListCards = new ArrayList<>();
@@ -37,10 +38,10 @@ public abstract class Ai extends Player {
         }
     }
 
-    public void selectPile(Pile tablePile, boolean isCharacter){
-        if(isCharacter){
+    public void selectPile(Pile tablePile, boolean isCharacter) {
+        if (isCharacter) {
             tablePile.selectTeamPile(this.getPlayerIdx());
-        }else{
+        } else {
             tablePile.selectRandomPile();
         }
         this.setSelectedPileIndex(tablePile.getSelectedPileIndex());
