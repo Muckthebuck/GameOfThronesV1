@@ -1,24 +1,26 @@
 package thrones.game;
 
+import ch.aplu.jcardgame.CardGame;
 import ch.aplu.jcardgame.Hand;
 
 import java.util.Optional;
 
 public class Human extends Player {
 
-    public Human(RuleChecker rules) {
-        super(rules);
+    public Human(RuleChecker rules, int idx) {
+        super(rules, idx);
     }
 
-    public void makeMove(Pile tablePile,boolean isCharacter){
-       do{
-           pickACorrectSuit(isCharacter);
-           if(!this.getSelected().isPresent()){
-               this.setSelected(Optional.empty());
-               return;
-           }
-           selectPile(tablePile);
-       }while(!this.isLegalMove(tablePile));
+    public void makeMove(CardGame game, Pile tablePile, boolean isCharacter){
+       pickACorrectSuit(isCharacter);
+
+       if(!this.getSelected().isPresent()){
+           this.setSelected(Optional.empty());
+           return;
+       }
+       this.displaySelected(game);
+       System.out.println(("gets here"));
+       selectPile(tablePile);
 
     }
 
@@ -46,6 +48,7 @@ public class Human extends Player {
                 }
                 GameOfThrones.delay(100);
             } while (true);
+
         }
     }
 
