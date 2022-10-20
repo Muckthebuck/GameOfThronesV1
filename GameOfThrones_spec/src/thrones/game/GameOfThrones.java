@@ -17,6 +17,13 @@ public class GameOfThrones extends CardGame{
     private Table table;
     static public int seed;
     static Random random;
+
+    public enum playerType{
+        human,
+        random,
+
+    }
+
     public GameOfThrones() {
         super(700, 700, 30);
         setTitle("Game of Thrones (V" + version + ") Constructed for UofM SWEN30006 with JGameGrid (www.aplu.ch)");

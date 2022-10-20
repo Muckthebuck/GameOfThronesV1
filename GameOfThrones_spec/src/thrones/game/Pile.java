@@ -61,6 +61,9 @@ public class Pile{
         updatePileRanks();
     }
 
+    void selectTeamPile(int playerIdx){
+        selectedPileIndex= playerIdx % 2;
+    }
     void selectRandomPile() {
         selectedPileIndex = random.nextInt(2);
     }
@@ -105,6 +108,12 @@ public class Pile{
         }
     }
 
+    void transferCardToPile(Card card){
+        card.setVerso(false);
+        card.transfer(this.getSelectedPile(), true); // transfer to pile (includes graphic effect)
+        this.updatePileRanks();
+    }
+
 
     public Hand[] getPiles() {
         return piles;
@@ -113,6 +122,11 @@ public class Pile{
     public Hand getSelectedPile(){
         return getPiles()[getSelectedPileIndex()];
     }
+
+    public Hand getSelectedPile(int pileIndex){
+        return getPiles()[pileIndex];
+    }
+
 
     public Location[] getPileLocations() {
         return pileLocations;
