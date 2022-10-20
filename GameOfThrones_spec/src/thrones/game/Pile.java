@@ -19,7 +19,7 @@ public class Pile{
     private Actor[] pileTextActors = { null, null };
     private final Random random;
     private final String[] playerTeams;
-
+    private ScoreCalculator scoreCalculator = new ScoreCalculator(ATTACK_RANK_INDEX, DEFENCE_RANK_INDEX);
 
     private final Location[] pileLocations = {
             new Location(350, 280),
@@ -60,7 +60,9 @@ public class Pile{
 
         updatePileRanks();
     }
-
+    int getTeamPileIdx(int playerIdx){
+        return playerIdx%2;
+    }
     void selectTeamPile(int playerIdx){
         selectedPileIndex= playerIdx % 2;
     }
@@ -82,8 +84,7 @@ public class Pile{
 
     int[] calculatePileRanks(int pileIndex) {
         Hand currentPile = piles[pileIndex];
-        int i = currentPile.isEmpty() ? 0 : ((GoTCards.Rank) currentPile.get(0).getRank()).getRankValue();
-        return new int[] { i, i };
+        return scoreCalculator.calculate(currentPile);
     }
 
     void updatePileRankState(int pileIndex, int attackRank, int defenceRank) {
