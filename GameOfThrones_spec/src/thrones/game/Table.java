@@ -104,17 +104,14 @@ public class Table {
         // 1: play the first 2 hearts
         for (int i = 0; i < 2; i++) {
             int playerIndex = getPlayerIndex(nextStartingPlayer + i);
-            Game.setStatusText("Player " + playerIndex + " select a Heart card to play");
 
             // get move from player
             players[playerIndex].makeMove(Game, tablePile, true);
             selected = players[playerIndex].getSelected();
-            int pileIndex = playerIndex % 2;
+
             assert selected.isPresent() : " Pass returned on selection of character.";
-            System.out.println("Player " + playerIndex + " plays " + GoTCards.canonical(selected.get()) + " on pile " + pileIndex);
-            selected.get().setVerso(false);
-            selected.get().transfer(tablePile.getPiles()[pileIndex], true); // transfer to pile (includes graphic effect)
-            tablePile.updatePileRanks();
+            System.out.println("Player " + playerIndex + " plays " + GoTCards.canonical(selected.get()) + " on pile " + tablePile.getSelectedPile());
+            tablePile.transferCardToPile(selected.get());
         }
 
         // 2: play the remaining nbPlayers * nbRounds - 2
@@ -123,7 +120,7 @@ public class Table {
 
         while(remainingTurns > 0) {
             nextPlayer = getPlayerIndex(nextPlayer);
-            Game.setStatusText("Player" + nextPlayer + " select a non-Heart card to play.");
+
             players[nextPlayer].makeMove(Game, tablePile, false);
             selected = players[nextPlayer].getSelected();
 
@@ -134,9 +131,7 @@ public class Table {
                     System.err.println("Caught BrokeRuleException: " + e.getMessage());
                 }
                 System.out.println("Player " + nextPlayer + " plays " + GoTCards.canonical(selected.get()) + " on pile " + tablePile.getSelectedPileIndex());
-                selected.get().setVerso(false);
-                selected.get().transfer(tablePile.getSelectedPile(), true); // transfer to pile (includes graphic effect)
-                tablePile.updatePileRanks();
+                tablePile.transferCardToPile(selected.get());
             } else {
                 Game.setStatusText("Pass.");
             }

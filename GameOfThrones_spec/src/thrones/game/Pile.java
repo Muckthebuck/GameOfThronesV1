@@ -61,6 +61,9 @@ public class Pile{
         updatePileRanks();
     }
 
+    void selectTeamPile(int playerIdx){
+        selectedPileIndex= playerIdx % 2;
+    }
     void selectRandomPile() {
         selectedPileIndex = random.nextInt(2);
     }
@@ -103,6 +106,12 @@ public class Pile{
             pileTextActors[i] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.smallFont);
             game.addActor(pileTextActors[i], pileStatusLocations[i]);
         }
+    }
+
+    void transferCardToPile(Card card){
+        card.setVerso(false);
+        card.transfer(this.getSelectedPile(), true); // transfer to pile (includes graphic effect)
+        this.updatePileRanks();
     }
 
 

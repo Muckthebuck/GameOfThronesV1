@@ -50,4 +50,22 @@ public abstract class Player implements Moveable{
     public void displaySelected(CardGame game){
         game.setStatusText("Selected: " + GoTCards.canonical(this.getSelected().get()) + ". Player" + this.getPlayerIdx() + " select a pile to play the card.");
     }
+    public void displayTurnStart(CardGame game, boolean isCharacter){
+        if(isCharacter){
+            game.setStatusText("Player " + this.getPlayerIdx() + " select a Heart card to play");
+
+        }else{
+            game.setStatusText("Player" + this.getPlayerIdx() + " select a non-Heart card to play.");
+        }
+    }
+    public boolean isLegalMove(Pile tablePile){
+        boolean valid = false;
+        try {
+            valid = this.getRules().checkMove((GoTCards.Suit) this.getSelected().get().getSuit(),
+                    tablePile.getSelectedPile(), false);
+        } catch (BrokeRuleException e) {
+            System.err.println("Caught BrokeRuleExcetion: " + e.getMessage());
+        }
+        return valid;
+    }
 }

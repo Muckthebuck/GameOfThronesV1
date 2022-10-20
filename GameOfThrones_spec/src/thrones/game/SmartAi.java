@@ -15,10 +15,6 @@ public class SmartAi extends Ai{
 
     }
 
-    @Override
-    public boolean isLegalMove(Pile tablePile) {
-        return false;
-    }
 
     @Override
     public void pickACorrectSuit(boolean isCharacter) {
@@ -26,7 +22,7 @@ public class SmartAi extends Ai{
     }
 
     @Override
-    public void selectPile(Pile tablePile) {
+    public void selectPile(Pile tablePile, boolean isCharacter) {
 
     }
 }

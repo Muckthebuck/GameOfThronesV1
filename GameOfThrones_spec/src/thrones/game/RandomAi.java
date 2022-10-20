@@ -15,16 +15,20 @@ public class RandomAi extends Ai {
     }
 
     public void makeMove(CardGame game, Pile tablePile, boolean isCharacter){
+        this.displayTurnStart(game, isCharacter);
         pickACorrectSuit(isCharacter);
         if(!this.getSelected().isPresent()){
             this.setSelected(Optional.empty());
             return;
         }
-       this.displaySelected(game);
-        selectPile(tablePile);
+        this.displaySelected(game);
+
+
+        selectPile(tablePile,isCharacter);
         if(!this.isLegalMove(tablePile)){
             this.setSelected(Optional.empty());
         }
+
     }
 
     public void  pickACorrectSuit(boolean isCharacter) {
@@ -45,20 +49,14 @@ public class RandomAi extends Ai {
         }
     }
 
-    public boolean isLegalMove(Pile tablePile){
-        boolean valid = false;
-        try {
-            valid = this.getRules().checkMove((GoTCards.Suit) this.getSelected().get().getSuit(),
-                tablePile.getSelectedPile(this.getSelectedPileIndex()), false);
-        } catch (BrokeRuleException e) {
-            System.err.println("Caught BrokeRuleException: " + e.getMessage());
+
+
+    public void selectPile(Pile tablePile, boolean isCharacter){
+        if(isCharacter){
+            tablePile.selectTeamPile(this.getPlayerIdx());
+        }else{
+            tablePile.selectRandomPile();
         }
-        return valid;
-
-    }
-
-    public void selectPile(Pile tablePile){
-        tablePile.selectRandomPile();
         this.setSelectedPileIndex(tablePile.getSelectedPileIndex());
     }
 

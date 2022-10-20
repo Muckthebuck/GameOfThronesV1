@@ -1,7 +1,6 @@
 package thrones.game;
 
 import ch.aplu.jcardgame.CardGame;
-import ch.aplu.jcardgame.Hand;
 
 import java.util.Optional;
 
@@ -12,20 +11,22 @@ public class Human extends Player {
     }
 
     public void makeMove(CardGame game, Pile tablePile, boolean isCharacter){
-       pickACorrectSuit(isCharacter);
+      do{
+          this.displayTurnStart(game, isCharacter);
+          pickACorrectSuit(isCharacter);
+          if(!this.getSelected().isPresent()){
+              this.setSelected(Optional.empty());
+              return;
+          }
+          this.displaySelected(game);
 
-       if(!this.getSelected().isPresent()){
-           this.setSelected(Optional.empty());
-           return;
-       }
-       this.displaySelected(game);
-       System.out.println(("gets here"));
-       selectPile(tablePile);
+          selectPile(tablePile, isCharacter);
 
+      }while(!this.isLegalMove(tablePile));
     }
 
 
-    public boolean isLegalMove( Pile tablePile){return false;};
+
     public void  pickACorrectSuit(boolean isCharacter){
         if (this.getHand().isEmpty()) {
             this.setSelected(Optional.empty());
@@ -52,8 +53,13 @@ public class Human extends Player {
         }
     }
 
-    public void selectPile(Pile tablePile){
-        tablePile.waitForPileSelection();
+    public void selectPile(Pile tablePile, boolean isCharacter){
+        if(isCharacter){
+            tablePile.selectTeamPile(this.getPlayerIdx());
+        }else{
+            tablePile.waitForPileSelection();
+        }
+
     }
 
 }
