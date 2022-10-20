@@ -114,6 +114,11 @@ public class Pile{
         return getPiles()[getSelectedPileIndex()];
     }
 
+    public Hand getSelectedPile(int pileIndex){
+        return getPiles()[pileIndex];
+    }
+
+
     public Location[] getPileLocations() {
         return pileLocations;
     }

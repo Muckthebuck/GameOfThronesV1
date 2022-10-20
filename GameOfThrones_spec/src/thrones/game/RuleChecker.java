@@ -13,6 +13,7 @@ public class RuleChecker {
         rules.add(new HeartStartRule());
     }
 
+
     public boolean checkMove(GoTCards.Suit suit, Hand pile, boolean throwException) throws BrokeRuleException {
         for (Rule rule: rules) {
             if (!rule.checkValidMove(suit, pile)) {
