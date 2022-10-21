@@ -33,7 +33,7 @@ public class Table {
     private final int DEFENCE_RANK_INDEX = 1;
     // boolean[] humanPlayers = { true, false, false, false};
     //boolean[] humanPlayers = {true, false, false, false};
-    PlayerType[] playerTypes = {PlayerType.HUMAN, PlayerType.RANDOM, PlayerType.RANDOM, PlayerType.RANDOM};
+    PlayerType[] playerTypes = {PlayerType.SMART, PlayerType.SMART, PlayerType.SMART, PlayerType.SMART};
     Player[] players;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     //private Hand[] hands;

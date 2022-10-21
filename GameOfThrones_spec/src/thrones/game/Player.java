@@ -65,6 +65,9 @@ public class Player {
     }
 
     public boolean isLegalMove(Pile tablePile) {
+        if(!this.getSelected().isPresent()){
+            return  true;
+        }
         boolean valid = false;
         try {
             valid = this.getRules().checkMove((GoTCards.Suit) this.getSelected().get().getSuit(),
