@@ -33,14 +33,14 @@ public class Ai extends Player {
                 shortListCards.add(card);
             }
         }
-        if (shortListCards.isEmpty() || !isCharacter && GameOfThrones.random.nextInt(3) == 0) {
+        if (shortListCards.isEmpty() || !isCharacter && GameOfThrones.getRandom().nextInt(3) == 0) {
             this.setSelected(Optional.empty());
         } else {
-            this.setSelected(Optional.of(shortListCards.get(GameOfThrones.random.nextInt(shortListCards.size()))));
+            this.setSelected(Optional.of(shortListCards.get(GameOfThrones.getRandom().nextInt(shortListCards.size()))));
         }
     }
 
-    public void selectPile(Pile tablePile, boolean isCharacter) {
+    public void selectPile(TablePile tablePile, boolean isCharacter) {
         if (isCharacter) {
             tablePile.selectTeamPile(this.getPlayerIdx());
         } else {

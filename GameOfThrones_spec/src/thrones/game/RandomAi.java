@@ -10,7 +10,7 @@ public class RandomAi extends Ai {
         super(rules, random, idx);
     }
 
-    public void makeMove(CardGame game, Pile tablePile, boolean isCharacter) {
+    public void makeMove(CardGame game, TablePile tablePile, boolean isCharacter) {
         this.displayTurnStart(game, isCharacter);
         pickACorrectSuit(isCharacter);
         if (!this.getSelected().isPresent()) {

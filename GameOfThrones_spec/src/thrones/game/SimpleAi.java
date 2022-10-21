@@ -12,7 +12,7 @@ public class SimpleAi extends Ai {
 
     //TODO
     @Override
-    public void makeMove(CardGame game, Pile tablePile, boolean isCharacter) {
+    public void makeMove(CardGame game, TablePile tablePile, boolean isCharacter) {
         this.displayTurnStart(game, isCharacter);
         pickACorrectSuit(isCharacter);
         if (!this.getSelected().isPresent()) {
@@ -30,11 +30,10 @@ public class SimpleAi extends Ai {
 
     }
 
-    private void removeHinderMoves(Pile tablePile) {
+    private void removeHinderMoves(TablePile tablePile) {
         GoTCards.Suit suit = (GoTCards.Suit) this.getSelected().get().getSuit();
         if (tablePile.getSelectedPileIndex() != tablePile.getTeamPileIdx(this.getPlayerIdx())) {
             // in enemy team Pile, dont want to increase their attack or defence
-
             if (suit == GoTCards.Suit.CLUBS || suit == GoTCards.Suit.SPADES) {
                 this.setSelected(Optional.empty());
                 return;

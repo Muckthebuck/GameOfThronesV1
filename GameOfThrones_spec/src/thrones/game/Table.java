@@ -7,7 +7,7 @@ import ch.aplu.jgamegrid.Location;
 import thrones.game.GoTCards.Rank;
 import thrones.game.GoTCards.Suit;
 import thrones.game.PlayerFactory.PlayerType;
-
+import java.util.ArrayList;
 import java.util.Optional;
 
 @SuppressWarnings("serial")
@@ -33,18 +33,21 @@ public class Table {
     private final int DEFENCE_RANK_INDEX = 1;
     // boolean[] humanPlayers = { true, false, false, false};
     //boolean[] humanPlayers = {true, false, false, false};
-    PlayerType[] playerTypes = {PlayerType.SMART, PlayerType.SMART, PlayerType.SMART, PlayerType.SMART};
+    ArrayList<PlayerType> playerTypes = new ArrayList<>();
     Player[] players;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     //private Hand[] hands;
-    private final Pile tablePile;
+    private final TablePile tablePile;
     private final CardGame Game;
-    private int nextStartingPlayer = GameOfThrones.random.nextInt(nbPlayers);
+    private int nextStartingPlayer = GameOfThrones.getRandom().nextInt(nbPlayers);
+    private int seed = 130006;
+
 
 
     public Table(CardGame game) {
+        playerTypes = ((GameOfThrones)game).getPlayerTypes();
         this.Game = game;
-        tablePile = new Pile(playerTeams, GameOfThrones.random, game);
+        tablePile = new TablePile(playerTeams, GameOfThrones.getRandom(), game);
         scoreHandler = new ScoreHandler(nbPlays, nbPlayers, game, tablePile, playerTeams);
         playerFactory = new PlayerFactory();
         setupGame();

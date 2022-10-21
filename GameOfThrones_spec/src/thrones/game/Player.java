@@ -64,7 +64,7 @@ public class Player {
         }
     }
 
-    public boolean isLegalMove(Pile tablePile) {
+    public boolean isLegalMove(TablePile tablePile) {
         if(!this.getSelected().isPresent()){
             return  true;
         }
@@ -77,10 +77,10 @@ public class Player {
         }
         return valid;
     }
-    public void makeMove(CardGame game, Pile tablePile, boolean isCharacter){};
+    public void makeMove(CardGame game, TablePile tablePile, boolean isCharacter){};
 
 
     public void pickACorrectSuit(boolean isCharacter){};
 
-    public void selectPile(Pile tablePile, boolean isCharacter){};
+    public void selectPile(TablePile tablePile, boolean isCharacter){};
 }

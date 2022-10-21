@@ -3,49 +3,52 @@ package thrones.game;
 import ch.aplu.jcardgame.Deck;
 import ch.aplu.jcardgame.Hand;
 
+import java.util.ArrayList;
+
 public class PlayerFactory {
     public final int nbStartCards = 9;
     // initialising the player as human by default
-    PlayerType playerType = PlayerType.HUMAN;
+    PlayerType playerType = PlayerType.human;
 
-    public Player[] setUpPlayers(PlayerType[] playerTypes, RuleChecker rules, Deck deck) {
-        Player[] players = new Player[playerTypes.length];
-        for (int i = 0; i < playerTypes.length; i++) {
-            players[i] = getPlayer(playerTypes[i], rules, i);
+    public Player[] setUpPlayers(ArrayList<PlayerType> playerTypes, RuleChecker rules, Deck deck) {
+        Player[] players = new Player[playerTypes.size()];
+        for (int i = 0; i < playerTypes.size(); i++) {
+            players[i] = getPlayer(playerTypes.get(i), rules, i);
             players[i].setHand(new Hand(deck));
         }
-        Dealer.deal(players, playerTypes.length, nbStartCards, deck);
+        Dealer.deal(players, playerTypes.size(), nbStartCards, deck);
         return players;
     }
 
     public Player getPlayer(PlayerType playerType, RuleChecker rules, int idx) {
-        if (playerType == PlayerType.HUMAN) {
+        if (playerType == PlayerType.human) {
             // player is human and we use the human class
             return new Human(rules, idx);
         }
 
-        if (playerType == PlayerType.RANDOM) {
+        if (playerType == PlayerType.random) {
             // player is an AI and is plays randomly
-            return new RandomAi(rules, GameOfThrones.random, idx);
+            return new RandomAi(rules, GameOfThrones.getRandom(), idx);
         }
 
 
-        if (playerType == PlayerType.SIMPLE) {
+        if (playerType == PlayerType.simple) {
             // player is an AI and is playing simply
-            return new SimpleAi(rules, GameOfThrones.random, idx);
+            return new SimpleAi(rules, GameOfThrones.getRandom(), idx);
         }
 
-        if (playerType == PlayerType.SMART) {
+        if (playerType == PlayerType.smart) {
             // player is an AI and is playing smartly
-            return new SmartAi(rules, GameOfThrones.random, idx);
+            return new SmartAi(rules, GameOfThrones.getRandom(), idx);
         }
         return null;
     }
 
     public enum PlayerType {
-        HUMAN,
-        RANDOM,
-        SIMPLE,
-        SMART
+        human,
+        random,
+        simple,
+        smart;
+
     }
 }

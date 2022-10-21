@@ -10,7 +10,7 @@ public class Human extends Player {
         super(rules, idx);
     }
 
-    public void makeMove(CardGame game, Pile tablePile, boolean isCharacter) {
+    public void makeMove(CardGame game, TablePile tablePile, boolean isCharacter) {
         do {
             this.displayTurnStart(game, isCharacter);
             pickACorrectSuit(isCharacter);
@@ -52,7 +52,7 @@ public class Human extends Player {
         }
     }
 
-    public void selectPile(Pile tablePile, boolean isCharacter) {
+    public void selectPile(TablePile tablePile, boolean isCharacter) {
         if (isCharacter) {
             tablePile.selectTeamPile(this.getPlayerIdx());
         } else {
