@@ -34,7 +34,6 @@ public class SimpleAi extends Ai {
         GoTCards.Suit suit = (GoTCards.Suit) this.getSelected().get().getSuit();
         if (tablePile.getSelectedPileIndex() != tablePile.getTeamPileIdx(this.getPlayerIdx())) {
             // in enemy team Pile, dont want to increase their attack or defence
-
             if (suit == GoTCards.Suit.CLUBS || suit == GoTCards.Suit.SPADES) {
                 this.setSelected(Optional.empty());
                 return;
