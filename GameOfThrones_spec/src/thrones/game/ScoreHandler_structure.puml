@@ -77,15 +77,15 @@ diagram meta data end '/
 digraph g {
     rankdir="TB"
     splines=polyline
-    
 
-'nodes 
-subgraph cluster_3165170 { 
+
+'nodes
+subgraph cluster_3165170 {
    	label=game
 	labeljust=l
 	fillcolor="#ececec"
 	style=filled
-   
+
    ScoreHandler1414826933[
 	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
 <TR><TD ALIGN="LEFT" >(C)ScoreHandler</TD></TR>
@@ -101,10 +101,10 @@ subgraph cluster_3165170 {
 	shape=plaintext
 	fillcolor="#FFFFFF"
 ];
-} 
+}
 
-'edges    
+'edges
 
-    
+
 }
 @enduml
