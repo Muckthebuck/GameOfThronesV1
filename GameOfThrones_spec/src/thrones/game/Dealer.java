@@ -21,7 +21,7 @@ public class Dealer {
         for (int i = 0; i < nbPlayers; i++) {
             for (int j = 0; j < 3; j++) {
                 List<Card> heartCards = pack.getCardsWithSuit(GoTCards.Suit.HEARTS);
-                int x = GameOfThrones.random.nextInt(heartCards.size());
+                int x = GameOfThrones.getRandom().nextInt(heartCards.size());
                 Card randomCard = heartCards.get(x);
                 randomCard.removeFromHand(false);
                 players[i].getHand().insert(randomCard, false);
@@ -49,7 +49,7 @@ public class Dealer {
 
     private static Card randomCard(Hand hand) {
         assert !hand.isEmpty() : " random card from empty hand.";
-        int x = GameOfThrones.random.nextInt(hand.getNumberOfCards());
+        int x = GameOfThrones.getRandom().nextInt(hand.getNumberOfCards());
         return hand.get(x);
     }
 

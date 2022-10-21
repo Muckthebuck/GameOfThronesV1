@@ -7,7 +7,7 @@ import ch.aplu.jgamegrid.Location;
 import thrones.game.GoTCards.Rank;
 import thrones.game.GoTCards.Suit;
 import thrones.game.PlayerFactory.PlayerType;
-import java.util.Properties;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @SuppressWarnings("serial")
@@ -33,60 +33,21 @@ public class Table {
     private final int DEFENCE_RANK_INDEX = 1;
     // boolean[] humanPlayers = { true, false, false, false};
     //boolean[] humanPlayers = {true, false, false, false};
-    PlayerType[] playerTypes = {PlayerType.SMART, PlayerType.SMART, PlayerType.SMART, PlayerType.SMART};
+    ArrayList<PlayerType> playerTypes = new ArrayList<>();
     Player[] players;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     //private Hand[] hands;
-    private final Pile tablePile;
+    private final TablePile tablePile;
     private final CardGame Game;
-    private int nextStartingPlayer = GameOfThrones.random.nextInt(nbPlayers);
+    private int nextStartingPlayer = GameOfThrones.getRandom().nextInt(nbPlayers);
     private int seed = 130006;
-    PlayerType[] playerTypes;
-
-    public static PlayerType checkPlayer( String player) {
-        /* method to check what the player values are in properties and change PlayerType accordingly*/
-        if (player.equals("human")) {
-            return PlayerType.HUMAN;
-        }
-        if (player.equals("random")) {
-            System.out.println("r");
-            return PlayerType.RANDOM;
-        }
-        if (player.equals("simple")) {
-            return PlayerType.SIMPLE;
-        }
-        if (player.equals("smart")) {
-            return PlayerType.SMART;
-        }
-        //default to random
-        return PlayerType.RANDOM;
-    }
-    public PlayerType[] initWithProperties (Properties properties) {
-
-        String player = properties.getProperty("players.0");
-        PlayerType player0 = checkPlayer(player);
 
 
-        player = properties.getProperty("players.1");
-        PlayerType player1 = checkPlayer(player);
 
-        player = properties.getProperty("players.2");
-        PlayerType player2 = checkPlayer(player);
-
-        player = properties.getProperty("players.3");
-        PlayerType player3 = checkPlayer(player);
-
-        PlayerType[] playerTypes = {player0, player1, player2, player3};
-        /*System.out.println(player0);
-        System.out.println(player1);
-        System.out.println(player2);
-        System.out.println(player3);*/
-        return playerTypes;
-    }
-    public Table(CardGame game, Properties properties) {
-        playerTypes = initWithProperties(properties);
+    public Table(CardGame game) {
+        playerTypes = ((GameOfThrones)game).getPlayerTypes();
         this.Game = game;
-        tablePile = new Pile(playerTeams, GameOfThrones.random, game);
+        tablePile = new TablePile(playerTeams, GameOfThrones.getRandom(), game);
         scoreHandler = new ScoreHandler(nbPlays, nbPlayers, game, tablePile, playerTeams);
         playerFactory = new PlayerFactory();
         setupGame();

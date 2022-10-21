@@ -20,9 +20,9 @@ public class ScoreHandler {
     };
     private final Actor[] scoreActors = {null, null, null, null};
     private final int[] scores;
-    private final Pile tablePile;
+    private final TablePile tablePile;
 
-    public ScoreHandler(int nbPlays, int nbPlayers, CardGame game, Pile tablePile, String[] playerTeams) {
+    public ScoreHandler(int nbPlays, int nbPlayers, CardGame game, TablePile tablePile, String[] playerTeams) {
         this.nbPlays = nbPlays;
         this.nbPlayers = nbPlayers;
         this.Game = game;
@@ -36,7 +36,7 @@ public class ScoreHandler {
         for (int i = 0; i < nbPlayers; i++) {
             scores[i] = 0;
             String text = "P" + i + "-0";
-            scoreActors[i] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.bigFont);
+            scoreActors[i] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.getBigFont());
             Game.addActor(scoreActors[i], scoreLocations[i]);
         }
 
@@ -48,7 +48,7 @@ public class ScoreHandler {
     public void updateScore(int player) {
         Game.removeActor(scoreActors[player]);
         String text = "P" + player + "-" + scores[player];
-        scoreActors[player] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.bigFont);
+        scoreActors[player] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.getBigFont());
         Game.addActor(scoreActors[player], scoreLocations[player]);
     }
 

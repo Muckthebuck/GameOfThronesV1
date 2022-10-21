@@ -45,7 +45,6 @@ public class ScoreCalculator {
         }
         return rank;
     }
-
     private int[] characterCardRank(Card card) {
         int i = ((GoTCards.Rank) card.getRank()).getRankValue();
         return new int[]{i, i};
@@ -60,7 +59,7 @@ public class ScoreCalculator {
     private int[] magicCardRank(Card card, int[] oldCardRank) {
         int[] rank = {0, 0};
         int idx = (oldCardRank[0] > 0) ? 0 : 1;
-        rank[idx] = ((GoTCards.Rank) card.getRank()).getRankValue();
+        rank[idx] = -1 * ((GoTCards.Rank) card.getRank()).getRankValue();
         return rank;
     }
 
