@@ -48,7 +48,6 @@ public class ScoreCalculator {
 
     private int[] characterCardRank(Card card) {
         int i = ((GoTCards.Rank) card.getRank()).getRankValue();
-
         return new int[]{i, i};
     }
 

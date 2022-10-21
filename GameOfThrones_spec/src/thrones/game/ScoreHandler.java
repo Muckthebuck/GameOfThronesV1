@@ -91,7 +91,7 @@ public class ScoreHandler {
         } else {
             scores[0] += pile0CharacterRank.getRankValue();
             scores[2] += pile0CharacterRank.getRankValue();
-            character1Result = "Character 1 attack character 0 failed.";
+            character1Result = "Character 1 attack on character 0 failed.";
         }
         updateScores();
         System.out.println(character0Result);

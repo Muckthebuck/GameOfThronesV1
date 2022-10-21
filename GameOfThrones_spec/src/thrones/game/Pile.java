@@ -6,6 +6,7 @@ import ch.aplu.jgamegrid.Location;
 import ch.aplu.jgamegrid.TextActor;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Pile {
@@ -29,7 +30,7 @@ public class Pile {
     private int selectedPileIndex = NON_SELECTION_VALUE;
     private final Actor[] pileTextActors = {null, null};
     private final ScoreCalculator scoreCalculator = new ScoreCalculator(ATTACK_RANK_INDEX, DEFENCE_RANK_INDEX);
-
+    private final ArrayList<Card> usedCards = new ArrayList<>();
 
     public Pile(String[] playerTeams, Random random, CardGame game) {
         this.game = game;
@@ -38,9 +39,10 @@ public class Pile {
     }
 
     public void resetPile(Deck deck) {
+
         if (piles != null) {
             for (Hand pile : piles) {
-                pile.removeAll(true);
+               pile.removeAll(true);
             }
         }
         piles = new Hand[2];
@@ -59,14 +61,20 @@ public class Pile {
         }
 
         updatePileRanks();
+
     }
 
     int getTeamPileIdx(int playerIdx) {
         return playerIdx % 2;
     }
 
+
     void selectTeamPile(int playerIdx) {
         selectedPileIndex = playerIdx % 2;
+    }
+
+    void selectPile(int pileIdx){
+        selectedPileIndex = pileIdx;
     }
 
     void selectRandomPile() {
@@ -116,6 +124,7 @@ public class Pile {
     void transferCardToPile(Card card) {
         card.setVerso(false);
         card.transfer(this.getSelectedPile(), true); // transfer to pile (includes graphic effect)
+        usedCards.add(card);
         this.updatePileRanks();
     }
 
@@ -143,5 +152,17 @@ public class Pile {
 
     public int getSelectedPileIndex() {
         return selectedPileIndex;
+    }
+
+    public ArrayList<Card> getUsedCards() {
+        return usedCards;
+    }
+
+    public int getATTACK_RANK_INDEX() {
+        return ATTACK_RANK_INDEX;
+    }
+
+    public int getDEFENCE_RANK_INDEX() {
+        return DEFENCE_RANK_INDEX;
     }
 }

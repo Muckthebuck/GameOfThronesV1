@@ -1,7 +1,4 @@
 @startuml
-class thrones.game.MoveHandler {
-+ void getMove()
-}
 class thrones.game.Human {
 + void makeMove(CardGame,Pile,boolean)
 + void pickACorrectSuit(boolean)
@@ -64,10 +61,6 @@ class thrones.game.GameOfThrones {
 - String version
 - Table table
 + {static} void main(String[])
-}
-enum thrones.game.playerType {
-+  human
-+  random
 }
 class thrones.game.Ai {
 - Random random

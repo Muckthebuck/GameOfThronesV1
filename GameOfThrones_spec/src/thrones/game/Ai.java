@@ -20,6 +20,8 @@ public class Ai extends Player {
         return random;
     }
 
+
+
     public void pickACorrectSuit(boolean isCharacter) {
         Hand currentHand = this.getHand();
 
