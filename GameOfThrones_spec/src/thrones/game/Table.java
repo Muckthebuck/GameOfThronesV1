@@ -12,10 +12,9 @@ import java.util.Optional;
 
 @SuppressWarnings("serial")
 public class Table {
-    public final int nbPlayers = 4;
-    public final int nbPlays = 6;
-    public final int nbRounds = 3;
-
+    private final int nbPlayers = 4;
+    private final int nbPlays = 6;
+    private final int nbRounds = 3;
     private final int handWidth = 400;
     private final String[] playerTeams = {"[Players 0 & 2]", "[Players 1 & 3]"};
     private final RuleChecker rules = new RuleChecker();
@@ -27,20 +26,14 @@ public class Table {
             new Location(350, 75),
             new Location(625, 350)
     };
-    private final int watchingTime = 5000;
 
-    private final int ATTACK_RANK_INDEX = 0;
-    private final int DEFENCE_RANK_INDEX = 1;
-    // boolean[] humanPlayers = { true, false, false, false};
-    //boolean[] humanPlayers = {true, false, false, false};
-    ArrayList<PlayerType> playerTypes = new ArrayList<>();
-    Player[] players;
+    private ArrayList<PlayerType> playerTypes = new ArrayList<>();
+    private Player[] players;
     private final Deck deck = new Deck(Suit.values(), Rank.values(), "cover");
     //private Hand[] hands;
     private final TablePile tablePile;
     private final CardGame Game;
     private int nextStartingPlayer = GameOfThrones.getRandom().nextInt(nbPlayers);
-    private int seed = 130006;
 
 
 
@@ -144,11 +137,11 @@ public class Table {
         }
 
         // 3: calculate winning & update scores for players
-        scoreHandler.setScores(ATTACK_RANK_INDEX, DEFENCE_RANK_INDEX);
+        scoreHandler.setScores(tablePile.getATTACK_RANK_INDEX(), tablePile.getDEFENCE_RANK_INDEX());
 
         // 5: discarded all cards on the piles
         nextStartingPlayer += 1;
-        GameOfThrones.delay(watchingTime);
+        GameOfThrones.delay(GameOfThrones.getWatchingTime());
     }
 
 

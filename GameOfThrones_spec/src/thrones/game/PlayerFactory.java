@@ -8,8 +8,6 @@ import java.util.ArrayList;
 public class PlayerFactory {
     public final int nbStartCards = 9;
     // initialising the player as human by default
-    PlayerType playerType = PlayerType.human;
-
     public Player[] setUpPlayers(ArrayList<PlayerType> playerTypes, RuleChecker rules, Deck deck) {
         Player[] players = new Player[playerTypes.size()];
         for (int i = 0; i < playerTypes.size(); i++) {

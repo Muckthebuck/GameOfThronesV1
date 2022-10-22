@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class TablePile {
     private final CardGame game;
-    private final int pileWidth = 40;
+    private final int PILE_WIDTH = 40;
     private final int NON_SELECTION_VALUE = -1;
     private final int UNDEFINED_INDEX = -1;
     private final int ATTACK_RANK_INDEX = 0;
@@ -48,7 +48,7 @@ public class TablePile {
         piles = new Hand[2];
         for (int i = 0; i < 2; i++) {
             piles[i] = new Hand(deck);
-            piles[i].setView(game, new RowLayout(pileLocations[i], 8 * pileWidth));
+            piles[i].setView(game, new RowLayout(pileLocations[i], 8 * PILE_WIDTH));
             piles[i].draw();
             final Hand currentPile = piles[i];
             final int pileIndex = i;
@@ -103,7 +103,7 @@ public class TablePile {
         TextActor currentPile = (TextActor) pileTextActors[pileIndex];
         game.removeActor(currentPile);
         String text = playerTeams[pileIndex] + " Attack: " + attackRank + " - Defence: " + defenceRank;
-        pileTextActors[pileIndex] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.getSmallFont());
+        pileTextActors[pileIndex] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.getSMALLFONT());
         game.addActor(pileTextActors[pileIndex], pileStatusLocations[pileIndex]);
     }
 
@@ -116,7 +116,7 @@ public class TablePile {
 
     void initPileTextActors(String text) {
         for (int i = 0; i < pileTextActors.length; i++) {
-            pileTextActors[i] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.getSmallFont());
+            pileTextActors[i] = new TextActor(text, Color.WHITE, game.bgColor, GameOfThrones.getSMALLFONT());
             game.addActor(pileTextActors[i], pileStatusLocations[i]);
         }
     }

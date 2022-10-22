@@ -36,7 +36,7 @@ public class ScoreHandler {
         for (int i = 0; i < nbPlayers; i++) {
             scores[i] = 0;
             String text = "P" + i + "-0";
-            scoreActors[i] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.getBigFont());
+            scoreActors[i] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.getBIGFONT());
             Game.addActor(scoreActors[i], scoreLocations[i]);
         }
 
@@ -48,7 +48,7 @@ public class ScoreHandler {
     public void updateScore(int player) {
         Game.removeActor(scoreActors[player]);
         String text = "P" + player + "-" + scores[player];
-        scoreActors[player] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.getBigFont());
+        scoreActors[player] = new TextActor(text, Color.WHITE, Game.bgColor, GameOfThrones.getBIGFONT());
         Game.addActor(scoreActors[player], scoreLocations[player]);
     }
 
